@@ -1,0 +1,113 @@
+plugins {
+    id 'java'   // говорим Gradle: это Java-проект
+    id 'war'    // добавляем поддержку сборки .war (нужно для деплоя на Tomcat)
+}
+
+group = "org.abb_tech" // groupId артефакта (типа "пакет" проекта в мире Maven/Gradle)
+version = "1.0.0"      // версия приложения
+
+java {
+    // Настраиваем версию Java для компиляции и таргета.
+    // Обычно здесь ставят 17, 21 и т.п. — у тебя стоит 25 (если JDK поддерживает — ок).
+    sourceCompatibility = JavaVersion.VERSION_25   // под какую версию Java компилируем исходники
+    targetCompatibility = JavaVersion.VERSION_25   // под какую версию байткода таргетимся
+}
+
+repositories {
+    mavenCentral()  // основной репозиторий, откуда Gradle качает все библиотеки (JUnit, Mockito, Jakarta и т.д.)
+}
+
+ext {
+    // Просто переменные, чтобы не дублировать версии в коде ниже
+    set('jakartaVersion', '6.1.0-M2') // версия Jakarta Servlet API (совместимо с Tomcat 11, который работает на Jakarta)
+    set('jUnitVersion','5.10.2')      // версия JUnit BOM (платформы)
+}
+
+dependencies {
+    // ====== Тесты ======
+    // Подтягиваем BOM JUnit → все артефакты JUnit будут одной версии 5.10.2
+    testImplementation platform("org.junit:junit-bom:${jUnitVersion}")
+    // Основной модуль JUnit Jupiter (API + движок)
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    // Mockito для моков в тестах
+    testImplementation 'org.mockito:mockito-core:5.12.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.12.0'
+    // Платформа JUnit (launcher) — иногда нужна явно, чтобы запуск в IDE/Gradle не ломался
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // ====== Рантайм (компиляция) ======
+    // Jakarta Servlet API — даёт интерфейсы HttpServlet, ServletRequest и т.д.
+    // compileOnly = эта зависимость нужна ТОЛЬКО для компиляции,
+    //               в сам .war она не упаковывается,
+    //               потому что её предоставляет сам Tomcat.
+    compileOnly group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: "${jakartaVersion}"
+}
+
+test {
+    // Говорим Gradle использовать JUnit 5 (Jupiter) для тестов
+    useJUnitPlatform()
+}
+
+// Эта часть тебе сейчас не особо нужна, если ты делаешь .war для Tomcat,
+// но она просто задаёт Main-Class для обычного jar.
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'Main' // если будешь запускать как jar, тут будет искаться класс Main
+        )
+    }
+}
+
+// Настройка задачи war: даём .war-нику нормальное имя
+tasks.named('war', War) {
+    archiveFileName.set("numoperations.war") // имя war-файла в build/libs
+}
+
+// Пример простой задачи Gradle — демонстрация, что tasks можно объявлять
+tasks.register("firstTask"){
+    print("The First Tomcat task launched") // просто что-то выведет при запуске ./gradlew firstTask
+}
+
+ext {
+    // Путь к установленному Tomcat. Здесь важно:
+    // - слеши обратные в Gradle ОК, но ещё надёжнее было бы использовать C:/... (прямые слеши)
+    tomcatHome = "C:\\Users\\sandm\\Desktop\\apache-tomcat-11.0.14"
+}
+
+// ===============================
+//      АВТОМАТИЗАЦИЯ ДЕПЛОЯ
+// ===============================
+
+// Задача: остановить Tomcat
+def stopTomcat = tasks.register('stopTomcat', Exec) {
+    workingDir tomcatHome                      // откуда запускать команду
+    commandLine "${tomcatHome}/bin/shutdown.bat" // выполняем shutdown.bat
+    ignoreExitValue = true                     // не падать, если Tomcat уже остановлен
+}
+
+// Задача: скопировать собранный WAR в webapps Tomcat
+def copyWarToTomcat = tasks.register('copyWarToTomcat', Copy) {
+    dependsOn tasks.named('war')               // сначала обязательно собрать новый .war
+    from("$buildDir/libs")                     // откуда копировать (build/libs)
+    include("numoperations.war")              // какой именно файл копировать
+    into("$tomcatHome/webapps")                // куда копировать (папка деплоя Tomcat)
+    mustRunAfter stopTomcat                    // гарантируем, что это произойдёт после остановки Tomcat
+}
+
+// Задача: запустить Tomcat
+def startTomcat = tasks.register('startTomcat', Exec) {
+    workingDir tomcatHome                      // рабочая директория — Tomcat home
+    commandLine "${tomcatHome}/bin/startup.bat"  // запускаем startup.bat
+    mustRunAfter copyWarToTomcat               // запускать Tomcat только после копирования .war
+}
+
+// Комбинированная задача: полный деплой "одной кнопкой"
+tasks.register('deployToTomcat') {
+    // Запустить по цепочке: остановка → копирование → запуск
+    dependsOn stopTomcat, copyWarToTomcat, startTomcat
+
+    doLast {
+        println "Deployment to Tomcat completed successfully!"
+        // В конце просто пишем сообщение, что деплой завершён
+    }
+}
