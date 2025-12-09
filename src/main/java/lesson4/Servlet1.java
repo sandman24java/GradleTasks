@@ -1,4 +1,6 @@
-import dto.RandomNumberProvider;
+package lesson4;
+
+import lesson4.dto.RandomNumberProvider;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebInitParam;
@@ -47,8 +49,6 @@ public class Servlet1 extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("Generated "+ randint1 + " & "  + randint2 + " for Servlet2");
+        }
     }
-
-
-
-}
+    

@@ -30,10 +30,12 @@ dependencies {
     // Основной модуль JUnit Jupiter (API + движок)
     testImplementation 'org.junit.jupiter:junit-jupiter'
     // Mockito для моков в тестах
-    testImplementation 'org.mockito:mockito-core:5.12.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.12.0'
+    testImplementation 'org.mockito:mockito-core:5.20.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.20.0'
     // Платформа JUnit (launcher) — иногда нужна явно, чтобы запуск в IDE/Gradle не ломался
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.3'
 
     // ====== Рантайм (компиляция) ======
     // Jakarta Servlet API — даёт интерфейсы HttpServlet, ServletRequest и т.д.
@@ -60,8 +62,9 @@ jar {
 
 // Настройка задачи war: даём .war-нику нормальное имя
 tasks.named('war', War) {
-    archiveFileName.set("numoperations.war") // имя war-файла в build/libs
+    archiveFileName.set("operations.war") // имя war-файла в build/libs
 }
+
 
 // Пример простой задачи Gradle — демонстрация, что tasks можно объявлять
 tasks.register("firstTask"){
@@ -89,7 +92,7 @@ def stopTomcat = tasks.register('stopTomcat', Exec) {
 def copyWarToTomcat = tasks.register('copyWarToTomcat', Copy) {
     dependsOn tasks.named('war')               // сначала обязательно собрать новый .war
     from("$buildDir/libs")                     // откуда копировать (build/libs)
-    include("numoperations.war")              // какой именно файл копировать
+    include("operations.war")              // какой именно файл копировать
     into("$tomcatHome/webapps")                // куда копировать (папка деплоя Tomcat)
     mustRunAfter stopTomcat                    // гарантируем, что это произойдёт после остановки Tomcat
 }

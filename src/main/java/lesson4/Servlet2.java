@@ -1,4 +1,6 @@
-import dto.NumberAdder;
+package lesson4;
+
+import lesson4.dto.NumberAdder;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebInitParam;

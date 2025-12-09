@@ -1,4 +1,4 @@
-package dto;
+package lesson4.dto;
 
 public class RandomNumberProvider {
     public int generateNumber(){

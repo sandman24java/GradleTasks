@@ -1,4 +1,4 @@
-package dto;
+package lesson4.dto;
 
 import jakarta.servlet.http.HttpServlet;
 
