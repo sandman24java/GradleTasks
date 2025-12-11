@@ -1,4 +1,4 @@
-package lesson5.dto;
+package task16.dto;
 
 public class CarDto {
     private String color;

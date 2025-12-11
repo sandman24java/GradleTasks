@@ -1,6 +1,6 @@
-package lesson5.repository;
+package task16.repository;
 
-import lesson5.model.CarEntity;
+import task16.model.CarEntity;
 
 import java.util.List;
 import java.util.Optional;

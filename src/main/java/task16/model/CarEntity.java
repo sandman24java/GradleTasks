@@ -1,4 +1,4 @@
-package lesson5.model;
+package task16.model;
 
 import java.util.Objects;
 

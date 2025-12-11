@@ -1,18 +1,13 @@
-package lesson5.repository;
+package task16.repository;
 
 
-import lesson5.model.CarEntity;
+import task16.model.CarEntity;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
 
 
 public class CarRepositoryImplTest {
