@@ -15,7 +15,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@WebServlet(name="cars",urlPatterns = "/cars")
+@WebServlet(name="cars",urlPatterns = {"/cars","/addcar","/deletecar","/updatecar"})
 public class CarController extends HttpServlet {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private CarService carService;
@@ -25,47 +25,93 @@ public class CarController extends HttpServlet {
         carService = new CarServiceImpl(new CarRepositoryImpl());
 
     }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String id = request.getParameter("id");
-        var params = request.getParameterMap();
-        try {
-            if (id != null) {
-                CarDto car = carService.getCarById(Integer.parseInt(id));
-                response.getWriter().println(OBJECT_MAPPER.writeValueAsString(car));
-            } else {
-                var cars = carService.getCars();
-                response.getWriter().println(OBJECT_MAPPER.writeValueAsString(cars));
+        String path = request.getServletPath();
+        switch (path) {
+            case "/cars":
+            try {
+                String id = request.getParameter("id");
+                if (id != null) {
+                    CarDto car = carService.getCarById(Integer.parseInt(id));
+                    response.getWriter().println(OBJECT_MAPPER.writeValueAsString(car));
+                } else {
+                    var cars = carService.getCars();
+                    response.getWriter().println(OBJECT_MAPPER.writeValueAsString(cars));
+                }
+                response.setStatus(200);
+                response.setContentType("application/json");
+            } catch (Exception exception) {
+                if (exception instanceof CarNotFoundException) {
+                    response.setStatus(404);
+                    response.getWriter().println("Car not found");
+                } else {
+                    response.setStatus(500);
+                    response.getWriter().println("Internal Server Error");
+                }
             }
-            response.setStatus(200);
-            response.setContentType("application/json");
-        } catch (Exception exception) {
-            if (exception instanceof CarNotFoundException) {
-                response.setStatus(404);
-                response.getWriter().println("Car not found");
-            } else {
-                response.setStatus(500);
-                response.getWriter().println("Internal Server Error");
-            }
-
+            break;
+            default:
+                response.getWriter().println("Invalid Request");
         }
-
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("application/json");
-        try(BufferedReader  buffReader =  request.getReader()){
-            StringBuffer myString = new StringBuffer();
-            String line = null;
-            while ((line = buffReader.readLine()) != null){
-                myString.append(line);
-            }
-            CarDto CarDto = OBJECT_MAPPER.readValue(myString.toString(), CarDto.class);
-            carService.addCar(CarDto);
-            response.setStatus(HttpServletResponse.SC_CREATED);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String path = request.getServletPath();
+        switch (path) {
+            case "/addcar":
+                response.setContentType("application/json");
+                try (BufferedReader buffReader = request.getReader()) {
+                    StringBuffer myString = new StringBuffer();
+                    String line = null;
+                    while ((line = buffReader.readLine()) != null) {
+                        myString.append(line);
+                    }
+                    CarDto CarDto = OBJECT_MAPPER.readValue(myString.toString(), CarDto.class);
+                    carService.addCar(CarDto);
+                    response.setStatus(HttpServletResponse.SC_CREATED);
+                }
+                break;
+            case "/deletecar":
+                response.setContentType("application/json");
+                try (BufferedReader buffReader = request.getReader()) {
+                    StringBuffer myString = new StringBuffer();
+                    String line = null;
+                    while ((line = buffReader.readLine()) != null) {
+                        myString.append(line);
+                    }
+                    CarDto CarDto = OBJECT_MAPPER.readValue(myString.toString(), CarDto.class);
+                    carService.deleteCarById(CarDto.getId());
+                    response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                }
+                break;
+            case "/updatecar":
+                response.setContentType("application/json");
+                try (BufferedReader buffReader = request.getReader()) {
+                    StringBuffer myString = new StringBuffer();
+                    String line = null;
+                    while ((line = buffReader.readLine()) != null) {
+                        myString.append(line);
+                    }
+                    CarDto CarDto = OBJECT_MAPPER.readValue(myString.toString(), CarDto.class);
+                    carService.updateCar(CarDto.getId(), CarDto);
+                    response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                }
+                break;
+            default:
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Unknown GET endpoint: " + path);
         }
-
-
-
     }
-
 }
+
+
+
+
+
+
+
+
+
+
+
