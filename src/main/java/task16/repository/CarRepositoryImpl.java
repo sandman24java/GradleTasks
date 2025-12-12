@@ -34,6 +34,7 @@ public class CarRepositoryImpl implements CarRepository {
             carEntity.setColor(carEntityDto.getColor());
             carEntity.setSpeed(carEntityDto.getSpeed());
             carEntity.setDbCode(carEntityDto.getDbCode());
+            carEntity.setName(carEntityDto.getName());
             carEntities.set(carEntities.indexOf(carEntity), carEntity);
         }
     }

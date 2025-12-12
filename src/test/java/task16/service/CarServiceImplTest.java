@@ -27,10 +27,10 @@ public class CarServiceImplTest {
         // Слушай, моковый carRepository, если сервис позовёт тебя методом getCarById(...)
         //с любой цифрой,верни ему Optional(CarEntity("Red",100))
         Mockito.when(carRepository.getCarById(Mockito.anyInt()))
-                .thenReturn(Optional.of(new CarEntity("Red",100)));
+                .thenReturn(Optional.of(new CarEntity("Red",100,"Ferrari")));
         CarDto actualCarDto = carService.getCarById(1);
         // Я проверяю преобразование CarEntity-> CarDto
-        CarDto expectedCarDto = new CarDto("Red",100);
+        CarDto expectedCarDto = new CarDto("Red",100,"Ferrari");
         Assertions.assertEquals(actualCarDto.getId(),expectedCarDto.getId());
         Assertions.assertEquals(actualCarDto.getColor(),expectedCarDto.getColor());
         Assertions.assertEquals(actualCarDto.getSpeed(),expectedCarDto.getSpeed());
@@ -42,9 +42,9 @@ public class CarServiceImplTest {
     }
     @Test
     void getCarsTest(){
-        Mockito.when(carRepository.getCars()).thenReturn(List.of(new CarEntity("Red",100)));
+        Mockito.when(carRepository.getCars()).thenReturn(List.of(new CarEntity("Red",100,"Ferrari")));
         List<CarDto> actualList = carService.getCars();
-        List<CarDto> expectedList = List.of(new CarDto("Red",100));
+        List<CarDto> expectedList = List.of(new CarDto("Red",100,"Ferrari"));
         Assertions.assertEquals(actualList.get(0).getSpeed(),expectedList.get(0).getSpeed());
         Assertions.assertEquals(actualList.get(0).getColor(),expectedList.get(0).getColor());
     }
@@ -52,15 +52,15 @@ public class CarServiceImplTest {
     // Ты вызывал метод моего мока? И с теми же полями или нет?
     @Test
     void addCarTest(){
-        CarDto carDto = new CarDto("Red",100);
+        CarDto carDto = new CarDto("Red",100,"Ferrari");
         carService.addCar(carDto);
-        Mockito.verify(carRepository).saveCar(new CarEntity("Red",100));
+        Mockito.verify(carRepository).saveCar(new CarEntity("Red",100,"Ferrari"));
     }
     @Test
     void updateCarTestIdExists(){
-        CarDto carDto = new CarDto("Red",100);
+        CarDto carDto = new CarDto("Red",100,"Ferrari");
         carService.updateCar(1,carDto);
-        Mockito.verify(carRepository).updateCar(1,new CarEntity("Red",100));
+        Mockito.verify(carRepository).updateCar(1,new CarEntity("Red",100,"Ferrari"));
     }
     @Test
     void deleteCarByIdTest(){

@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import task16.dto.CarDto;
+import task16.repository.CarDBRepositoryImpl;
 import task16.repository.CarRepositoryImpl;
 import task16.service.CarService;
 import task16.service.CarServiceImpl;
@@ -22,7 +23,8 @@ public class CarController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        carService = new CarServiceImpl(new CarRepositoryImpl());
+        carService = new CarServiceImpl(new CarDBRepositoryImpl());
+
 
     }
 

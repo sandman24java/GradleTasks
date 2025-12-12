@@ -4,10 +4,12 @@ public class CarDto {
     private String color;
     private int speed;
     private int id;
+    private String name;
 
-    public CarDto(String color, int speed) {
+    public CarDto(String color, int speed,String name) {
         this.color = color;
         this.speed = speed;
+        this.name = name;
     }
     public CarDto() {
 
@@ -17,6 +19,7 @@ public class CarDto {
         this.color = builder.color;
         this.speed = builder.speed;
         this.id = builder.id;
+        this.name = builder.name;
     }
     public String getColor() {
         return color;
@@ -27,6 +30,7 @@ public class CarDto {
     public int getId() {
         return id;
     }
+    public String getName() {return  name;}
 
     public static CarBuilder builder(){
         return new CarBuilder();
@@ -35,10 +39,15 @@ public class CarDto {
         private String color;
         private int speed;
         private int id;
+        private String name;
         public CarBuilder(){}
 
         public CarBuilder color(String color){
             this.color = color;
+            return this;
+        }
+        public CarBuilder name(String name){
+            this.name = name;
             return this;
         }
         public CarBuilder speed(int speed){

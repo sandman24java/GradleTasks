@@ -3,7 +3,7 @@ package task16.model;
 import java.util.Objects;
 
 public class CarEntity {
-
+    private String name;
     private String color;
     private int speed;
     private int id;
@@ -21,9 +21,10 @@ public class CarEntity {
         return Objects.hash(color, speed, id, dbCode);
     }
 
-    public CarEntity(String color, int speed) {
+    public CarEntity(String color, int speed, String name) {
         this.color = color;
         this.speed = speed;
+        this.name = name;
     }
 
     public String getColor() {
@@ -58,14 +59,17 @@ public class CarEntity {
         this.dbCode = dbCode;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     @Override
     public String toString() {
-        return "CarEntity{" +
-                "color='" + color + '\'' +
-                ", speed=" + speed +
-                ", id=" + id +
-                ", dbCode='" + dbCode + '\'' +
-                '}';
+        return "Color is " + color + ", Speed is " + speed + ", Name is " + name;
     }
 }
 

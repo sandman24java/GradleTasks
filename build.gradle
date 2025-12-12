@@ -24,6 +24,8 @@ ext {
 }
 
 dependencies {
+    implementation 'com.zaxxer:HikariCP:5.1.0'
+    implementation 'org.postgresql:postgresql:42.7.4'
     // ====== Тесты ======
     // Подтягиваем BOM JUnit → все артефакты JUnit будут одной версии 5.10.2
     testImplementation platform("org.junit:junit-bom:${jUnitVersion}")

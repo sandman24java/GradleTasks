@@ -22,7 +22,10 @@ public class CarServiceImpl implements CarService {
         return carRepository.getCars().stream()
                 .map(car -> CarDto
                         .builder()
-                        .color(car.getColor()).speed(car.getSpeed()).id(car.getId())
+                        .name(car.getName())
+                        .color(car.getColor())
+                        .speed(car.getSpeed())
+                        .id(car.getId())
                         .build())
                 .toList();
     }
@@ -35,13 +38,12 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public void addCar(CarDto carDto) {
-        carRepository.saveCar(new CarEntity(carDto.getColor(),carDto.getSpeed()));
-
+        carRepository.saveCar(new CarEntity(carDto.getColor(),carDto.getSpeed(),carDto.getName()));
     }
 
     @Override
     public void updateCar(int id, CarDto carDto) {
-        carRepository.updateCar(id, new CarEntity(carDto.getColor(),carDto.getSpeed()));
+        carRepository.updateCar(id, new CarEntity(carDto.getColor(),carDto.getSpeed(),carDto.getName()));
 
     }
 
