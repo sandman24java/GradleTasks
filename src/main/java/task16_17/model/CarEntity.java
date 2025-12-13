@@ -1,4 +1,4 @@
-package task17.model;
+package task16_17.model;
 
 import java.util.Objects;
 

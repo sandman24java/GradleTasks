@@ -1,8 +1,8 @@
-package task17.repository;
+package task16_17.repository;
 
 
 import org.junit.jupiter.api.AfterEach;
-import task17.model.CarEntity;
+import task16_17.model.CarEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

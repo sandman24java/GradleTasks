@@ -1,6 +1,6 @@
-package task17.repository;
+package task16_17.repository;
 
-import task17.model.CarEntity;
+import task16_17.model.CarEntity;
 
 import java.util.List;
 import java.util.Optional;

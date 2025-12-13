@@ -1,4 +1,4 @@
-package task17.dto;
+package task16_17.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

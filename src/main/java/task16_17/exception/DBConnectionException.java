@@ -1,4 +1,4 @@
-package task17.exception;
+package task16_17.exception;
 
 import java.sql.SQLException;
 
