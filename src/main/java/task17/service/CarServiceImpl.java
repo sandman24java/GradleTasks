@@ -1,9 +1,9 @@
-package task16.service;
+package task17.service;
 
-import task16.dto.CarDto;
-import task16.exception.CarNotFoundException;
-import task16.model.CarEntity;
-import task16.repository.CarRepository;
+import task17.dto.CarDto;
+import task17.exception.CarNotFoundException;
+import task17.model.CarEntity;
+import task17.repository.CarRepository;
 
 import java.util.List;
 
@@ -20,12 +20,11 @@ public class CarServiceImpl implements CarService {
     @Override
     public List<CarDto> getCars() {
         return carRepository.getCars().stream()
-                .map(car -> CarDto
+                .map(carEntity -> CarDto
                         .builder()
-                        .name(car.getName())
-                        .color(car.getColor())
-                        .speed(car.getSpeed())
-                        .id(car.getId())
+                        .name(carEntity.getName())
+                        .color(carEntity.getColor())
+                        .speed(carEntity.getSpeed())
                         .build())
                 .toList();
     }

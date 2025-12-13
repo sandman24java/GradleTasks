@@ -1,8 +1,11 @@
-package task16.dto;
+package task17.dto;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class CarDto {
     private String color;
     private int speed;
+    @JsonIgnore
     private int id;
     private String name;
 

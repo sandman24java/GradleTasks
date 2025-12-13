@@ -1,7 +1,6 @@
-package task16.repository;
+package task17.repository;
 
-import task16.exception.DBConnectionException;
-import task16.model.CarEntity;
+import task17.model.CarEntity;
 
 import java.util.List;
 import java.util.Optional;
