@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="dataSourceStorageLocal" created-in="IU-252.28238.7">
+  <component name="dataSourceStorageLocal" created-in="IU-252.28539.13">
     <data-source name="car@localhost" uuid="98636aa1-e7e6-445d-882e-83f1d5bdc507">
       <database-info product="PostgreSQL" version="18.1 (Debian 18.1-1.pgdg13+2)" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.7.3" dbms="POSTGRES" exact-version="18.1" exact-driver-version="42.7">
         <identifier-quote-string>&quot;</identifier-quote-string>
@@ -15,7 +15,10 @@
               <node kind="schema" qname="@" />
             </node>
             <node kind="database" qname="car">
-              <node kind="schema" qname="database1" />
+              <node kind="schema">
+                <name qname="database1" />
+                <name qname="labdatabase" />
+              </node>
             </node>
             <node kind="database" qname="postgres">
               <node kind="schema" qname="public" />

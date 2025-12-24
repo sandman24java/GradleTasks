@@ -1,8 +1,8 @@
-package task16_17.repository;
+package task16_17_19.repository;
 
-import task16_17.config.DBConfig;
-import task16_17.exception.DBConnectionException;
-import task16_17.model.CarEntity;
+import task16_17_19.config.DBConfig;
+import task16_17_19.exception.DBConnectionException;
+import task16_17_19.model.CarEntity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,21 +1,20 @@
-package task16_17.controller;
+package task16_17_19.controller;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import task16_17.dto.CarDto;
-import task16_17.repository.CarDBRepositoryImpl;
-import task16_17.service.CarService;
-import task16_17.service.CarServiceImpl;
+import task16_17_19.dto.CarDto;
+import task16_17_19.repository.CarDBRepositoryImpl;
+import task16_17_19.service.CarService;
+import task16_17_19.service.CarServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import task16_17.exception.CarNotFoundException;
-
+import task16_17_19.exception.CarNotFoundException;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@WebServlet(name="cars",urlPatterns = {"/cars","/addcar","/deletecar","/updatecar"})
+@WebServlet(name="cars",urlPatterns = {"/car/getcars","/car/addcar","/car/deletecar","/car/updatecar"})
 public class CarController extends HttpServlet {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private CarService carService;
@@ -30,7 +29,7 @@ public class CarController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getServletPath();
         switch (path) {
-            case "/cars":
+            case "/car/getcars":
             try {
                 String id = request.getParameter("id");
                 if (id != null) {
@@ -61,7 +60,7 @@ public class CarController extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getServletPath();
         switch (path) {
-            case "/addcar":
+            case "/car/addcar":
                 response.setContentType("application/json");
                 try (BufferedReader buffReader = request.getReader()) {
                     StringBuffer myString = new StringBuffer();
@@ -74,7 +73,7 @@ public class CarController extends HttpServlet {
                     response.setStatus(HttpServletResponse.SC_CREATED);
                 }
                 break;
-            case "/deletecar":
+            case "/car/deletecar":
                 response.setContentType("application/json");
                 try (BufferedReader buffReader = request.getReader()) {
                     StringBuffer myString = new StringBuffer();
@@ -87,7 +86,7 @@ public class CarController extends HttpServlet {
                     response.setStatus(HttpServletResponse.SC_NO_CONTENT);
                 }
                 break;
-            case "/updatecar":
+            case "/car/updatecar":
                 response.setContentType("application/json");
                 try (BufferedReader buffReader = request.getReader()) {
                     StringBuffer myString = new StringBuffer();

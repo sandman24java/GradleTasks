@@ -1,8 +1,8 @@
-package task16_17.config;
+package task16_17_19.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import task16_17.exception.DBConnectionException;
+import task16_17_19.exception.DBConnectionException;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
